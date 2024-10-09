@@ -8,24 +8,30 @@ const Statistcs = (props) => {
   return (
     <div>
       <h2>statistcs</h2>
-      <div>
-        good {props.good}
-      </div>
-      <div>
-        neutral {props.neutral}
-      </div>
-      <div>
-        bad {props.bad}
-      </div>
-      <div>
-        all {props.good + props.neutral + props.bad}
-      </div>
-      <div>
-        average {avegare()}
-      </div>
-      <div>
-        positive {positive()}%
-      </div>
+      {
+        props.good + props.neutral + props.bad === 0
+          ? <div>No feedback given</div>
+          : <div>
+            <div>
+              good {props.good}
+            </div>
+            <div>
+              neutral {props.neutral}
+            </div>
+            <div>
+              bad {props.bad}
+            </div>
+            <div>
+              all {props.good + props.neutral + props.bad}
+            </div>
+            <div>
+              average {avegare()}
+            </div>
+            <div>
+              positive {positive()}%
+            </div>
+          </div>
+      }
     </div>
   )
 }
