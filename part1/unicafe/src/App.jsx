@@ -1,7 +1,19 @@
 import { useState } from 'react'
 
-const Statistcs = (props) => {
-  const avegare = () => (props.good - props.bad) / (props.good + props.neutral + props.bad);
+const Button = (props) => {
+  return <button onClick={() => props.handleClick()}>{props.text}</button>
+}
+
+const StatisticLine = (props) => {
+  return (
+    <div>
+      {props.text} {props.value}
+    </div>
+  )
+}
+
+const Statistics = (props) => {
+  const average = () => (props.good - props.bad) / (props.good + props.neutral + props.bad);
 
   const positive = () => (props.good) / (props.good + props.neutral + props.bad) * 100;
 
@@ -12,24 +24,12 @@ const Statistcs = (props) => {
         props.good + props.neutral + props.bad === 0
           ? <div>No feedback given</div>
           : <div>
-            <div>
-              good {props.good}
-            </div>
-            <div>
-              neutral {props.neutral}
-            </div>
-            <div>
-              bad {props.bad}
-            </div>
-            <div>
-              all {props.good + props.neutral + props.bad}
-            </div>
-            <div>
-              average {avegare()}
-            </div>
-            <div>
-              positive {positive()}%
-            </div>
+            <StatisticLine text="good" value={props.good} />
+            <StatisticLine text="neutral" value={props.neutral} />
+            <StatisticLine text="bad" value={props.bad} />
+            <StatisticLine text="all" value={props.good + props.neutral + props.bad} />
+            <StatisticLine text="average" value={average()} />
+            <StatisticLine text="positive" value={`${positive()}%`} />
           </div>
       }
     </div>
@@ -48,11 +48,11 @@ const App = () => {
         <h1>give feedback</h1>
       </header>
       <div>
-        <button onClick={() => setGood(g => g + 1)}>good </button>
-        <button onClick={() => setNeutral(n => n + 1)}>neutral </button>
-        <button onClick={() => setBad(b => b + 1)}> bad</button>
+        <Button text="good" handleClick={() => setGood(g => g + 1)} />
+        <Button text="neutral" handleClick={() => setNeutral(n => n + 1)} />
+        <Button text="bad" handleClick={() => setBad(b => b + 1)} />
       </div>
-      <Statistcs good={good} neutral={neutral} bad={bad} />
+      <Statistics good={good} neutral={neutral} bad={bad} />
     </>
   )
 }
