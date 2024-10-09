@@ -1,15 +1,40 @@
 import { useState } from 'react'
 
-function App() {
+const Statistcs = (props) => {
+  const avegare = () => (props.good - props.bad) / (props.good + props.neutral + props.bad);
+
+  const positive = () => (props.good) / (props.good + props.neutral + props.bad) * 100;
+
+  return (
+    <div>
+      <h2>statistcs</h2>
+      <div>
+        good {props.good}
+      </div>
+      <div>
+        neutral {props.neutral}
+      </div>
+      <div>
+        bad {props.bad}
+      </div>
+      <div>
+        all {props.good + props.neutral + props.bad}
+      </div>
+      <div>
+        average {avegare()}
+      </div>
+      <div>
+        positive {positive()}%
+      </div>
+    </div>
+  )
+}
+
+const App = () => {
   //Guarda los clcks para cada botón en su propio estado
   const [good, setGood] = useState(0);
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
-
-  const avegare = () => (good - bad) / (good + neutral + bad);
-
-  const positive = () => (good) / (good + neutral + bad) * 100;
-
 
   return (
     <>
@@ -21,27 +46,7 @@ function App() {
         <button onClick={() => setNeutral(n => n + 1)}>neutral </button>
         <button onClick={() => setBad(b => b + 1)}> bad</button>
       </div>
-      <div>
-        <h2>statistcs</h2>
-        <div>
-          good {good}
-        </div>
-        <div>
-          neutral {neutral}
-        </div>
-        <div>
-          bad {bad}
-        </div>
-        <div>
-          all {good + neutral + bad}
-        </div>
-        <div>
-          average {avegare()}
-        </div>
-        <div>
-          positive {positive()}%
-        </div>
-      </div>
+      <Statistcs good={good} neutral={neutral} bad={bad} />
     </>
   )
 }
