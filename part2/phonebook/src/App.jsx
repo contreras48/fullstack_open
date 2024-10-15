@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import axios  from 'axios';
+import axios from 'axios';
 
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
@@ -11,21 +11,27 @@ const App = () => {
   const [filter, setFilter] = useState('');
   const [persons, setPersons] = useState([]);
 
-  const handleSubmit = (event) => {
+  const addContact = (event) => {
     event.preventDefault();
 
     const isExist = persons.some(p => p.name.toLowerCase() === newName.toLowerCase())
-    
-    if(isExist){
+
+    if (isExist) {
       alert(`${newName} is already added to phonebook`)
-    }else{
-      setPersons(persons.concat({name: newName, number: newNumber}));
-      setNewName('');
-      setNewNumber('')
+    } else {
+      const newContact = { name: newName, number: newNumber };
+
+      axios
+        .post('http://localhost:3001/persons', newContact)
+        .then(response => {
+          setPersons(persons.concat(response.data));
+          setNewName('');
+          setNewNumber('')
+        });
     }
   }
 
-  const showContacts = filter === '' 
+  const showContacts = filter === ''
     ? persons
     : persons.filter(p => p.name.toLowerCase().includes(filter))
 
@@ -36,13 +42,13 @@ const App = () => {
         setPersons(response.data);
       })
   }, [])
-  
+
   return (
     <div>
       <h2>Phonebook</h2>
       <Filter filter={filter} handleFilter={value => setFilter(value)} />
       <h2>add a new</h2>
-      <PersonForm name={newName} number={newNumber} handleName={value => setNewName(value)} handleNumber={value => setNewNumber(value)} handleSubmit={handleSubmit}/>
+      <PersonForm name={newName} number={newNumber} handleName={value => setNewName(value)} handleNumber={value => setNewNumber(value)} handleSubmit={addContact} />
       <h2>Numbers</h2>
       <Phonebook contacts={showContacts} />
     </div>
