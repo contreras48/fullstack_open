@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios';
+import constactService from './services/contacts';
 
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
@@ -21,10 +21,10 @@ const App = () => {
     } else {
       const newContact = { name: newName, number: newNumber };
 
-      axios
-        .post('http://localhost:3001/persons', newContact)
+      constactService
+        .create(newContact)
         .then(response => {
-          setPersons(persons.concat(response.data));
+          setPersons(persons.concat(response));
           setNewName('');
           setNewNumber('')
         });
@@ -36,10 +36,10 @@ const App = () => {
     : persons.filter(p => p.name.toLowerCase().includes(filter))
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
+    constactService
+      .getAll()
       .then(response => {
-        setPersons(response.data);
+        setPersons(response);
       })
   }, [])
 
