@@ -31,6 +31,18 @@ const App = () => {
     }
   }
 
+  const deleteContact = id => {
+    const person = persons.find(p => p.id === id);
+    if(confirm(`Delete ${person.name} ?`)){
+      constactService
+        .remove(id)
+        .then(response => {
+          setPersons(persons.filter(p => p.id !== id))
+          alert(`${response.name} has been successfully eliminated`)
+        })
+    }
+  }
+
   const showContacts = filter === ''
     ? persons
     : persons.filter(p => p.name.toLowerCase().includes(filter))
@@ -50,7 +62,7 @@ const App = () => {
       <h2>add a new</h2>
       <PersonForm name={newName} number={newNumber} handleName={value => setNewName(value)} handleNumber={value => setNewNumber(value)} handleSubmit={addContact} />
       <h2>Numbers</h2>
-      <Phonebook contacts={showContacts} />
+      <Phonebook contacts={showContacts} handleDelete={deleteContact}/>
     </div>
   )
 }
