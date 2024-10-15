@@ -17,18 +17,30 @@ const App = () => {
     const isExist = persons.some(p => p.name.toLowerCase() === newName.toLowerCase())
 
     if (isExist) {
-      alert(`${newName} is already added to phonebook`)
+      const confirmUpdate = confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)
+      if (confirmUpdate) {
+        const contact = persons.find(p => p.name.toLowerCase() === newName)
+        const changeContact = {
+          ...contact,
+          number: newNumber
+        }
+        constactService
+          .update(changeContact, contact.id)
+          .then(response => {
+            setPersons(persons.map(p => p.id === response.id ? response : p))
+          })
+      }
     } else {
-      const newContact = { name: newName, number: newNumber };
-
+      const contact = { name: newName, number: newNumber };
       constactService
-        .create(newContact)
+        .create(contact)
         .then(response => {
           setPersons(persons.concat(response));
-          setNewName('');
-          setNewNumber('')
         });
     }
+
+    setNewName('');
+    setNewNumber('')
   }
 
   const deleteContact = id => {
