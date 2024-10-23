@@ -4,12 +4,15 @@ import constactService from './services/contacts';
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Phonebook from './components/PhoneBook'
+import Notification from './components/Notification'; 
+import './index.css';
 
 const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('');
   const [persons, setPersons] = useState([]);
+  const [message, setMessage] = useState(null);
 
   const addContact = (event) => {
     event.preventDefault();
@@ -19,7 +22,7 @@ const App = () => {
     if (isExist) {
       const confirmUpdate = confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)
       if (confirmUpdate) {
-        const contact = persons.find(p => p.name.toLowerCase() === newName)
+        const contact = persons.find(p => p.name.toLowerCase() === newName.toLowerCase())
         const changeContact = {
           ...contact,
           number: newNumber
@@ -28,6 +31,7 @@ const App = () => {
           .update(changeContact, contact.id)
           .then(response => {
             setPersons(persons.map(p => p.id === response.id ? response : p))
+            setMessage('Number changed');
           })
       }
     } else {
@@ -36,8 +40,13 @@ const App = () => {
         .create(contact)
         .then(response => {
           setPersons(persons.concat(response));
+          setMessage(`Added ${response.name}`);
         });
     }
+
+    setTimeout(() => {
+      setMessage(null)
+    }, 5000);
 
     setNewName('');
     setNewNumber('')
@@ -70,6 +79,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} />
       <Filter filter={filter} handleFilter={value => setFilter(value)} />
       <h2>add a new</h2>
       <PersonForm name={newName} number={newNumber} handleName={value => setNewName(value)} handleNumber={value => setNewNumber(value)} handleSubmit={addContact} />
