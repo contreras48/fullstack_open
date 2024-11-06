@@ -12,7 +12,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('');
   const [persons, setPersons] = useState([]);
-  const [message, setMessage] = useState(null);
+  const [notification, setNotification] = useState(null);
 
   const addContact = (event) => {
     event.preventDefault();
@@ -31,7 +31,11 @@ const App = () => {
           .update(changeContact, contact.id)
           .then(response => {
             setPersons(persons.map(p => p.id === response.id ? response : p))
-            setMessage('Number changed');
+            setNotification({message: 'Number changed', success:true});
+          })
+          .catch(error => {
+            setNotification({message: `Information of ${contact.name} has already been remoed form server`, success: false})
+            setPersons(persons.filter(p => p.id != contact.id))
           })
       }
     } else {
@@ -40,12 +44,12 @@ const App = () => {
         .create(contact)
         .then(response => {
           setPersons(persons.concat(response));
-          setMessage(`Added ${response.name}`);
+          setNotification({message: `Added ${response.name}`, success: true});
         });
     }
 
     setTimeout(() => {
-      setMessage(null)
+      setNotification(null)
     }, 5000);
 
     setNewName('');
@@ -79,7 +83,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={message} />
+      <Notification notification={notification} />
       <Filter filter={filter} handleFilter={value => setFilter(value)} />
       <h2>add a new</h2>
       <PersonForm name={newName} number={newNumber} handleName={value => setNewName(value)} handleNumber={value => setNewNumber(value)} handleSubmit={addContact} />
