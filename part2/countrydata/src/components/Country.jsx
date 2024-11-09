@@ -1,6 +1,5 @@
 const Country = ({ country }) => {
 
-  console.log(country.name.common)
   return (
     <div>
       <h1>{country.name.common}</h1>

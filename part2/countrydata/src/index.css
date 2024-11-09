@@ -19,3 +19,12 @@ input {
   border: 1px solid white;
   color: white
 }
+
+button {
+  margin-left: 10px;
+  background-color: #242424;
+  color: white;
+  border: 1px solid white;
+  border-radius: 8px;
+
+}

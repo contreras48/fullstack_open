@@ -1,15 +1,19 @@
-import Country from "./Country";
 
-const ListCountries = ({ countries }) => {
+
+const ListCountries = ({ countries, onClick }) => {
 
   const list = <ul>
-    {countries.map(c => <li key={c.cca2}>{c.name.common}</li>)}
+    {countries.map(c => {
+      return <li key={c.cca2}>
+        {c.name.common}
+        <button onClick={() => onClick(c)}>show</button>
+      </li>
+    })}
   </ul>
 
   return (
     <div>
       {countries.length === 0 && null}
-      {countries.length === 1 && <Country country={countries[0]}/>}
       {(countries.length > 1 && countries.length <= 10) && list}
       {countries.length > 10 && <p>Too many matches, specify another filter</p>}
     </div>
