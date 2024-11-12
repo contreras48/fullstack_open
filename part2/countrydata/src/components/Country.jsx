@@ -1,8 +1,5 @@
-import { useEffect, useState } from 'react';
-import Weather from './Weather'
-
 const Country = ({ country }) => {
-  const [lat, lon] = country.latlng;
+
   return (
     <div>
       <h1>{country.name.common}</h1>
@@ -15,7 +12,6 @@ const Country = ({ country }) => {
         }
       </ul>
       <img height={200} width={300} src={country.flags.svg} alt={country.flags.alt} />
-      <Weather lat={lat} lon={lon} capital={country.capital}/>
     </div>
   )
 
