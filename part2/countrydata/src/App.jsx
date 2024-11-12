@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import countriesServices from './service/countries'
+
 import Form from './components/Form'
 import ListCountries from './components/ListCountries'
 import Country from "./components/Country";
@@ -17,8 +18,6 @@ const App = () => {
 
   }
 
-  const handleClick = (value) => setList([value])
-
   useEffect(() => {
     countriesServices
       .getAll()
@@ -32,7 +31,7 @@ const App = () => {
       {
         list.length === 1
           ? <Country country={list[0]} />
-          : <ListCountries countries={list} onClick={handleClick} />
+          : <ListCountries countries={list} onClick={(value) => setList([value])} />
       }
     </div>
   )
