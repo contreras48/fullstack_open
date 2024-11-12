@@ -1,4 +1,7 @@
+import Weather from './Weather'
+
 const Country = ({ country }) => {
+  const [lat, lon] = country.latlng;
 
   return (
     <div>
@@ -11,7 +14,8 @@ const Country = ({ country }) => {
           Object.entries(country.languages).map(([code, name]) => <li key={code}>{name}</li>)
         }
       </ul>
-      <img height={200} width={300} src={country.flags.svg} alt={country.flags.alt} />
+      <img height={100} width={150} src={country.flags.svg} alt={country.flags.alt} />
+      <Weather lat={lat} lon={lon} capital={country.capital}/>
     </div>
   )
 
