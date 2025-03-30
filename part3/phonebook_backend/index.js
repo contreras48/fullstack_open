@@ -3,7 +3,7 @@ const app = express();
 
 app.use(express.json());
 
-const persons = [
+let persons = [
   { 
     "id": 1,
     "name": "Arto Hellas", 
@@ -25,6 +25,8 @@ const persons = [
     "number": "39-23-6423122"
   }
 ]
+
+const newId = () => Math.floor(Math.random() * 10000);
 
 app.get('/api/persons', (request, response) => {
   response.json(persons);
@@ -51,6 +53,39 @@ app.get('/api/persons/:id', (request, response) => {
     response.status(404).end();
   }
   
+});
+
+app.delete('/api/persons/:id', (request, response) => {
+  const id = Number(request.params.id);
+  const person = persons.find(person => person.id === id);
+  
+  if (person) {
+    persons = persons.filter(person => person.id !== id);
+    response.status(204).end();
+  }else {
+    response.status(404).end();
+  } 
+
+})
+
+app.post('/api/persons', (request, response) => {
+  const body = request.body;
+
+  if(!body.name || !body.number){
+    return response.status(400).json({
+      error: 'name or number missing'
+    });
+  }
+
+  const person = {
+    id: newId(),
+    name: body.name,
+    number: body.number
+  }
+
+  persons = persons.concat(person);
+
+  response.json(person);
 });
 
 
