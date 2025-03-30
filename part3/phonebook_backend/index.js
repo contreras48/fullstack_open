@@ -50,7 +50,9 @@ app.get('/api/persons/:id', (request, response) => {
   if(person){
     response.json(person);
   }else{
-    response.status(404).end();
+    response.status(404).json({
+      error: 'person not found'
+    });
   }
   
 });
@@ -63,7 +65,9 @@ app.delete('/api/persons/:id', (request, response) => {
     persons = persons.filter(person => person.id !== id);
     response.status(204).end();
   }else {
-    response.status(404).end();
+    response.status(404).json({
+      error: 'person not found'
+    });
   } 
 
 })
@@ -81,6 +85,12 @@ app.post('/api/persons', (request, response) => {
     id: newId(),
     name: body.name,
     number: body.number
+  }
+
+  if(persons.some(p => p.name === person.name)){
+    return response.status(400).json({
+      error: 'name must be unique'
+    });
   }
 
   persons = persons.concat(person);
