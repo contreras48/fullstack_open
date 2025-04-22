@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl  = 'http://localhost:3001/persons';
+const baseUrl  = 'https://phonebook-react.fly.dev/api/persons';
 
 
 const getAll = () => {
@@ -20,6 +20,6 @@ const remove = id => {
 
 const update = (contact, id) => {
   const request = axios.put(`${baseUrl}/${id}`, contact);
-  return request.then(response => response.data);
+  return request.then(response => response.data); 
 }
 export default {getAll, create, remove, update};
