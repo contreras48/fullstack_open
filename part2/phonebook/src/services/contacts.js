@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl  = 'https://phonebook-react.fly.dev/api/persons';
+const baseUrl  = '/api/persons';
 
 
 const getAll = () => {

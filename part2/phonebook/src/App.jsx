@@ -63,7 +63,7 @@ const App = () => {
         .remove(id)
         .then(response => {
           setPersons(persons.filter(p => p.id !== id))
-          alert(`${response.name} has been successfully eliminated`)
+          alert(`${person.name} has been successfully eliminated`)
         })
     }
   }
